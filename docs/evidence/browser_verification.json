@@ -1,0 +1,15 @@
+{
+  "url": "http://127.0.0.1:8003/",
+  "desktop_viewport": "1600x1000",
+  "mobile_viewport": "390x844",
+  "analysis_risk_cards": 3,
+  "agent_answer": "夏季的降水最多，达到了1034.96毫米。目前存在干旱风险，特别是在冬季，已经检测到28个连续少雨的事件。\n\n证据 1\n夏季累计降水\n1034.96 mm\n指标编码\nseason.夏季.total_precipitation_mm\n单位\nmm\n数据来源\n季节聚合\n地块范围\n全部地块\n开始日期\n2024-01-01\n结束日期\n2024-12-31\n分析任务\n19\n证据 2\n连续干日\n28 个\n指标编码\nrisk.DRY_SPELL\n单位\n个（event）\n数据来源\n连续7日 precipitation_mm < 1 mm/day；状态=触发；检测到 28 个事件，涉及 3 个地块，最近事件 2024-11-27 至 2024-12-31\n地块范围\n全部地块\n开始日期\n2024-01-01\n结束日期\n2024-12-31\n分析任务\n19\n19:36",
+  "runtime_exceptions": [],
+  "console_errors": [],
+  "screenshots": [
+    "01_dashboard_desktop.png",
+    "02_analysis_risks.png",
+    "03_agent_evidence.png",
+    "04_dashboard_mobile.png"
+  ]
+}

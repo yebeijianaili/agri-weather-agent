@@ -1,0 +1,23 @@
+{
+  "url": "http://127.0.0.1:8003/",
+  "question": "哪个季节降水最多，有干旱风险吗？",
+  "agent_status_text": "本地模型",
+  "agent_status_mode": "local_model",
+  "agent_status_title": "本地模型：qwen2.5:3b",
+  "answer": "夏季降水最多，达到了1034.96毫米。关于干旱风险，已经检测到28个连续少雨的事件，涉及3个地块，最近的事件发生在2024年11月27日至12月31日。\n\n证据 1\n连续干日\n28 个\n指标编码\nrisk.DRY_SPELL\n单位\n个（event）\n数据来源\n连续7日 precipitation_mm < 1 mm/day；状态=触发；检测到 28 个事件，涉及 3 个地块，最近事件 2024-11-27 至 2024-12-31\n地块范围\n全部地块\n开始日期\n2024-01-01\n结束日期\n2024-12-31\n分析任务\n18\n证据 2\n夏季累计降水\n1034.96 mm\n指标编码\nseason.夏季.total_precipitation_mm\n单位\nmm\n数据来源\n季节聚合\n地块范围\n全部地块\n开始日期\n2024-01-01\n结束日期\n2024-12-31\n分析任务\n18\n证据 3\n地块数量\n3 plot\n指标编码\noverview.plot_count\n单位\nplot\n数据来源\n当前分析概览\n地块范围\n全部地块\n开始日期\n2024-01-01\n结束日期\n2024-12-31\n分析任务\n18\n19:35",
+  "evidence_chip_count": 3,
+  "evidence_card_count": 3,
+  "runtime_exceptions": [],
+  "console_errors": [],
+  "screenshots": [
+    "07_local_model_agent.png",
+    "08_local_model_mobile.png"
+  ],
+  "checks": {
+    "local_model_badge": true,
+    "three_grounded_evidence_cards": true,
+    "no_runtime_exceptions": true,
+    "no_console_errors": true
+  },
+  "passed": true
+}

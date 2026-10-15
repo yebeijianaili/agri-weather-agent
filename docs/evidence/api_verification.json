@@ -1,0 +1,175 @@
+{
+  "verified_at": "2026-10-15T16:20:44+08:00",
+  "workflow": [
+    "CSV import",
+    "quality validation",
+    "analysis",
+    "Agent query",
+    "CSV export",
+    "Markdown export",
+    "Excel export",
+    "audit readback"
+  ],
+  "sample": {
+    "path": "data\\sample_weather_2024.csv",
+    "bytes": 63533,
+    "sha256": "b72c2016b0ab7cb42fd4369ab0313c3151de73741361fe933a87e45fa7848dfd"
+  },
+  "import": {
+    "import_id": 1,
+    "created_at": "2026-10-15T16:20:43+08:00",
+    "filename": "sample_weather_2024.csv",
+    "sha256": "b72c2016b0ab7cb42fd4369ab0313c3151de73741361fe933a87e45fa7848dfd",
+    "replace": true,
+    "total_rows": 1098,
+    "valid_rows": 1095,
+    "imported": 1095,
+    "updated": 0,
+    "rejected": 3,
+    "warning_rows": 2,
+    "exact_duplicates": 0,
+    "conflict_duplicates": 0,
+    "duplicates": 0,
+    "reason_counts": {
+      "missing_required": 3
+    },
+    "warning_counts": {
+      "missing_value": 2
+    },
+    "errors": [
+      {
+        "line": 90,
+        "code": "missing_required",
+        "message": "solar_radiation_wm2 不能为空"
+      },
+      {
+        "line": 415,
+        "code": "missing_required",
+        "message": "solar_radiation_wm2 不能为空"
+      },
+      {
+        "line": 779,
+        "code": "missing_required",
+        "message": "solar_radiation_wm2 不能为空"
+      }
+    ],
+    "warnings": [
+      {
+        "line": 207,
+        "code": "missing_value",
+        "message": "缺测字段: humidity_pct"
+      },
+      {
+        "line": 614,
+        "code": "missing_value",
+        "message": "缺测字段: humidity_pct"
+      }
+    ],
+    "truncated_errors": 0,
+    "truncated_warnings": 0,
+    "batch_duplicate_exact": 0,
+    "batch_duplicate_conflicts": 0,
+    "data_source": {
+      "source_id": 1,
+      "created_at": "2026-10-15T16:20:43+08:00",
+      "source_key": "csv-import-1-b72c2016b0ab7cb4",
+      "provider": "用户上传 CSV",
+      "dataset_name": "sample_weather_2024.csv",
+      "landing_page": "/api/imports/history",
+      "query_urls": [],
+      "active": true,
+      "provenance": {
+        "source_key": "csv-import-1-b72c2016b0ab7cb4",
+        "provider": "用户上传 CSV",
+        "dataset_name": "sample_weather_2024.csv",
+        "landing_page": "/api/imports/history",
+        "query_urls": [],
+        "retrieved_at": "2026-10-15T16:20:43+08:00",
+        "source_type": "user_csv",
+        "observation_nature": "用户上传的 CSV 数据；平台未对文件内容进行外部独立实测核验。",
+        "quality_scope": "入库质量仅评价字段完整性、类型、工程范围、缺测和重复，不代表测量准确性。",
+        "import_batch": {
+          "import_id": 1,
+          "filename": "sample_weather_2024.csv",
+          "sha256": "b72c2016b0ab7cb42fd4369ab0313c3151de73741361fe933a87e45fa7848dfd",
+          "replace": true,
+          "total_rows": 1098,
+          "imported_rows": 1095,
+          "rejected_rows": 3
+        },
+        "parent_source": null,
+        "active_record_count": 1095
+      }
+    },
+    "quality": {
+      "scope": "ingestion_quality",
+      "scope_label": "入库质量",
+      "score_label": "入库质量得分",
+      "interpretation": "仅评价字段完整性、类型、工程范围、缺测、质量标记和重复；不代表上游数据的测量准确性或现场代表性。",
+      "score": 99.9,
+      "grade": "优秀",
+      "missing_values": 2,
+      "missing_by_field": {
+        "temperature_c": 0,
+        "precipitation_mm": 0,
+        "solar_radiation_wm2": 0,
+        "humidity_pct": 2
+      },
+      "suspect_records": 2,
+      "out_of_range_values": 0,
+      "duplicate_records": 0,
+      "valid_records": 1093,
+      "total_records": 1095,
+      "processing": {
+        "score_scope": "ingestion_only",
+        "missing_policy": "按指标剔除缺测单元，不丢弃整行；结果保留有效样本数",
+        "duplicate_policy": "timestamp + plot_id 唯一键去重；默认保留库内原记录，冲突进入导入审计；replace=true 仅用于整库替换",
+        "anomaly_policy": "物理范围先校验，统计异常采用 1.5×IQR 标记但保留原值"
+      },
+      "coverage_pct": {
+        "temperature_c": 100.0,
+        "precipitation_mm": 100.0,
+        "solar_radiation_wm2": 100.0,
+        "humidity_pct": 99.82
+      }
+    },
+    "message": "导入完成：新增 1095 条，更新 0 条，拒绝 3 条。"
+  },
+  "analysis": {
+    "analysis_id": 1,
+    "status": "completed",
+    "records": 1093,
+    "plots": 3,
+    "quality_score": 99.9,
+    "triggered_risks": 7
+  },
+  "agent": {
+    "answer": "夏季降水最多，达到了448.97 mm。目前有中等干旱风险，涉及3个地块，最长连续少雨7天。",
+    "evidence_count": 4
+  },
+  "exports": {
+    "seasonal_csv": {
+      "path": "exports/seasonal_statistics.csv",
+      "rows": 15,
+      "bytes": 2129,
+      "sha256": "a1f4cf1eaae8080014e391c03c0e7e1c0b889fcf23e39d092f6a6b4bea318a9d"
+    },
+    "markdown_report": {
+      "path": "exports/analysis_report.md",
+      "bytes": 4244,
+      "sha256": "33538cb49c0b49bdaa128d7d85ccd7f5a92399040542dc84fbeff4e7cd70e3b2"
+    },
+    "excel_report": {
+      "path": "exports/analysis_report.xlsx",
+      "sheets": [
+        "执行摘要",
+        "季节统计",
+        "风险清单",
+        "方法与口径"
+      ],
+      "bytes": 12699,
+      "sha256": "93e921e433245858fff131ffd74807c6c660eb7dc7901779c02c1efbe9fd1acf"
+    }
+  },
+  "audit_event_count": 3
+}

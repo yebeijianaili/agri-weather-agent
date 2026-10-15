@@ -1,0 +1,25 @@
+{
+  "url": "http://127.0.0.1:8003/",
+  "question": "请你自己比较12个月，告诉我最热的三个月，并说明正式数据来自哪里。",
+  "answer": "最热的三个月是2024年7月、8月和9月，平均气温分别为29.49°C、29.11°C和28.80°C。正式数据来自NASA/POWER Source Native Resolution Daily Data，由NASA Langley Research Center POWER Project提供。\n\n证据 1\n2024-07 平均气温\n29.49 °C\n指标编码\nmonth.2024-07.avg_temperature_c\n单位\n°C\n数据来源\n月度聚合\n地块范围\n全部地块\n开始日期\n2024-01-01\n结束日期\n2024-12-31\n分析任务\n19\n证据 2\n2024-08 平均气温\n29.11 °C\n指标编码\nmonth.2024-08.avg_temperature_c\n单位\n°C\n数据来源\n月度聚合\n地块范围\n全部地块\n开始日期\n2024-01-01\n结束日期\n2024-12-31\n分析任务\n19\n证据 3\n2024-09 平均气温\n28.8 °C\n指标编码\nmonth.2024-09.avg_temperature_c\n单位\n°C\n数据来源\n月度聚合\n地块范围\n全部地块\n开始日期\n2024-01-01\n结束日期\n2024-12-31\n分析任务\n19\n证据 4\n正式数据来源\nNASA/POWER Source Native Resolution Daily Data\n指标编码\ndata.source\n单位\n数据来源\nNASA Langley Research Center POWER Project\n来源主页\nhttps://power.larc.nasa.gov/\n获取时间\n2026-08-22T18:03:19+08:00\n分析任务\n19\n19:39",
+  "source_text": "NASA POWER · 正式公开数据",
+  "source_href": "https://power.larc.nasa.gov/",
+  "evidence_card_count": 4,
+  "agent_status_mode": "local_model",
+  "runtime_exceptions": [],
+  "console_errors": [],
+  "screenshots": [
+    "10_official_data_source.png",
+    "11_contextual_ai_answer.png"
+  ],
+  "checks": {
+    "official_source_visible": true,
+    "official_source_linked": true,
+    "dynamic_answer_mentions_top_months": true,
+    "four_grounded_evidence_cards": true,
+    "local_model_badge": true,
+    "no_runtime_exceptions": true,
+    "no_console_errors": true
+  },
+  "passed": true
+}

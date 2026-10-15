@@ -1,0 +1,53 @@
+{
+  "request": {
+    "question": "你好"
+  },
+  "response": {
+    "answer": "你好，随时准备帮助你查看农田的气象数据和风险情况。你想先看哪方面呢？",
+    "evidence": [],
+    "analysis_id": 13,
+    "intent": "greeting",
+    "context": {
+      "analysis_id": 13,
+      "plot_scope": "全部地块",
+      "date_start": "2024-01-01",
+      "date_end": "2024-12-31",
+      "record_count": 1093,
+      "agent_runtime": {
+        "mode": "local_model",
+        "provider": "ollama",
+        "model": "qwen2.5:3b",
+        "ready": true,
+        "fallback_used": false,
+        "fallback_reason": null,
+        "latency_ms": 1443
+      }
+    },
+    "suggestions": [
+      "哪个季节降水最多？",
+      "目前有哪些气象风险？",
+      "这批数据质量可靠吗？"
+    ],
+    "disclaimer": "涉及实际农事决策时，请再结合土壤、作物品种与现场巡查。",
+    "agent_runtime": {
+      "mode": "local_model",
+      "provider": "ollama",
+      "model": "qwen2.5:3b",
+      "ready": true,
+      "fallback_used": false,
+      "fallback_reason": null,
+      "latency_ms": 1443
+    },
+    "query_id": 23,
+    "queried_at": "2026-08-22T17:49:25+08:00"
+  },
+  "checks": {
+    "intent_is_greeting": true,
+    "brief_answer": true,
+    "no_analysis_prefix": true,
+    "no_fake_evidence": true,
+    "local_model_used": true,
+    "no_fallback": true
+  },
+  "passed": true
+}

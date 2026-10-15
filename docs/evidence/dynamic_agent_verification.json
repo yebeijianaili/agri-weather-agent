@@ -1,0 +1,153 @@
+{
+  "verified_at": "2026-08-22T19:51:06+08:00",
+  "base_url": "http://127.0.0.1:8003",
+  "responses": [
+    {
+      "question": "别给我背总览，直接说哪两个月最热，各是多少度？",
+      "answer": "2024年7月和8月是最热的两个月，平均气温分别为29.49°C和29.11°C。",
+      "intent": "temperature",
+      "evidence": [
+        {
+          "metric": "month.2024-07.avg_temperature_c",
+          "label": "2024-07 平均气温",
+          "value": 29.49,
+          "unit": "°C",
+          "source": "月度聚合",
+          "plot_scope": "全部地块",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "analysis_id": 19
+        },
+        {
+          "metric": "month.2024-08.avg_temperature_c",
+          "label": "2024-08 平均气温",
+          "value": 29.11,
+          "unit": "°C",
+          "source": "月度聚合",
+          "plot_scope": "全部地块",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "analysis_id": 19
+        }
+      ],
+      "agent_runtime": {
+        "mode": "local_model",
+        "provider": "ollama",
+        "model": "qwen2.5:3b",
+        "ready": true,
+        "fallback_used": false,
+        "fallback_reason": null,
+        "latency_ms": 2170
+      },
+      "analysis_id": 19,
+      "query_id": 83
+    },
+    {
+      "question": "把9月到11月当成一段，降水和光照情况怎么样？",
+      "answer": "9月到11月这段期间，累计降水为419.61毫米，平均太阳辐射为175.58瓦/平方米。",
+      "intent": "precipitation",
+      "evidence": [
+        {
+          "metric": "period.09-10-11.total_precipitation_mm",
+          "label": "9,10,11月（秋季） 累计降水",
+          "value": 419.61,
+          "unit": "mm",
+          "source": "匹配完整气象季节，直接使用季节聚合",
+          "plot_scope": "全部地块",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "analysis_id": 19
+        },
+        {
+          "metric": "period.09-10-11.avg_solar_radiation_wm2",
+          "label": "9,10,11月（秋季） 平均太阳辐射",
+          "value": 175.58,
+          "unit": "W/m²",
+          "source": "匹配完整气象季节，直接使用季节聚合",
+          "plot_scope": "全部地块",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "analysis_id": 19
+        }
+      ],
+      "agent_runtime": {
+        "mode": "local_model",
+        "provider": "ollama",
+        "model": "qwen2.5:3b",
+        "ready": true,
+        "fallback_used": false,
+        "fallback_reason": null,
+        "latency_ms": 2229
+      },
+      "analysis_id": 19,
+      "query_id": 84
+    },
+    {
+      "question": "10月比4月更热还是更冷？请给出这两个月各自的平均气温。",
+      "answer": "2024年10月的平均气温为25.63°C，比4月的平均气温26.03°C稍低一些。",
+      "intent": "temperature",
+      "evidence": [
+        {
+          "metric": "month.2024-04.avg_temperature_c",
+          "label": "2024-04 平均气温",
+          "value": 26.03,
+          "unit": "°C",
+          "source": "月度聚合",
+          "plot_scope": "全部地块",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "analysis_id": 19
+        },
+        {
+          "metric": "month.2024-10.avg_temperature_c",
+          "label": "2024-10 平均气温",
+          "value": 25.63,
+          "unit": "°C",
+          "source": "月度聚合",
+          "plot_scope": "全部地块",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "analysis_id": 19
+        }
+      ],
+      "agent_runtime": {
+        "mode": "local_model",
+        "provider": "ollama",
+        "model": "qwen2.5:3b",
+        "ready": true,
+        "fallback_used": false,
+        "fallback_reason": null,
+        "latency_ms": 1871
+      },
+      "analysis_id": 19,
+      "query_id": 85
+    },
+    {
+      "question": "你好，我第一次用。你能像同事一样简单告诉我可以问什么吗？",
+      "answer": "你可以问我关于当前分析的数据概览，比如查看某个地块或所有地块的气象数据，或者比较不同月份的气象情况。还可以询问风险是否已经触发，以及如何进行质量检查。",
+      "intent": "capability",
+      "evidence": [],
+      "agent_runtime": {
+        "mode": "local_model",
+        "provider": "ollama",
+        "model": "qwen2.5:3b",
+        "ready": true,
+        "fallback_used": false,
+        "fallback_reason": null,
+        "latency_ms": 1290
+      },
+      "analysis_id": 19,
+      "query_id": 86
+    }
+  ],
+  "checks": {
+    "all_queries_used_local_model": true,
+    "no_query_fallback": true,
+    "answers_are_distinct": true,
+    "two_month_ranking_is_grounded": true,
+    "month_range_is_grounded": true,
+    "cross_month_comparison_is_grounded": true,
+    "conversation_is_natural": true
+  },
+  "passed": true
+}

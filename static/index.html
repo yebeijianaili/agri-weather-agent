@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#163f31">
+  <meta name="description" content="基于可追溯气象网格日值的温度、降水、太阳辐射时序分析与农业风险研判平台">
+  <title>农田气象时序分析 Agent</title>
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">跳到主要内容</a>
+
+  <div class="app-shell" id="appShell">
+    <div class="drawer-scrim" id="drawerScrim" aria-hidden="true"></div>
+
+    <aside class="sidebar" id="sidebar" aria-label="分析导航与筛选">
+      <div class="brand-block">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" role="img">
+            <path d="M39 8C24 9 13 16 10 31c8-8 16-12 26-14-9 4-16 9-22 17 12 1 24-6 25-26Z"/>
+            <path d="M9 40c4-13 13-22 27-27" class="brand-stem"/>
+          </svg>
+        </div>
+        <div>
+          <strong>农田气象时序分析</strong>
+          <span>AGRICULTURAL WEATHER AGENT</span>
+        </div>
+        <button class="icon-button sidebar-close" id="closeSidebarBtn" type="button" aria-label="关闭筛选面板">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+
+      <nav class="section-nav" aria-label="页面章节">
+        <a class="section-nav__item is-active" href="#overviewSection" data-section="overviewSection" aria-current="location">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>
+          数据概览
+        </a>
+        <a class="section-nav__item" href="#sourceSection" data-section="sourceSection">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c4.4 0 8 1.6 8 3.5S16.4 10 12 10 4 8.4 4 6.5 7.6 3 12 3Z"/><path d="M4 6.5v5C4 13.4 7.6 15 12 15s8-1.6 8-3.5v-5M4 11.5v5C4 18.4 7.6 20 12 20s8-1.6 8-3.5v-5"/></svg>
+          数据来源
+        </a>
+        <a class="section-nav__item" href="#trendSection" data-section="trendSection">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h16M7 15l4-5 3 3 5-7"/></svg>
+          时序趋势
+        </a>
+        <a class="section-nav__item" href="#seasonSection" data-section="seasonSection">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg>
+          季节特征
+        </a>
+        <a class="section-nav__item" href="#insightSection" data-section="insightSection">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 22h4M8.5 15.5A7 7 0 1 1 15.5 15.5c-.9.8-1.5 1.4-1.5 2.5h-4c0-1.1-.6-1.7-1.5-2.5Z"/></svg>
+          风险洞察
+        </a>
+        <a class="section-nav__item" href="#agentSection" data-section="agentSection">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3M8 3h8M5 9h14v10H5zM8 13h.01M16 13h.01M9 17h6M2 12h3M19 12h3"/></svg>
+          Agent 问答
+        </a>
+        <a class="section-nav__item" href="#mcpSection" data-section="mcpSection">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h8M8 12h8M8 18h8M4 6h.01M4 12h.01M4 18h.01M20 6h.01M20 12h.01M20 18h.01"/></svg>
+          FastMCP 实验
+        </a>
+      </nav>
+
+      <div class="sidebar-divider"></div>
+
+      <form class="filter-panel" id="filterForm">
+        <div class="filter-panel__heading">
+          <div>
+            <span class="eyebrow">DATA SCOPE</span>
+            <h2>分析范围</h2>
+          </div>
+          <button class="text-button" id="resetFiltersBtn" type="button">重置</button>
+        </div>
+
+        <label class="field">
+          <span class="field__label">空间样本</span>
+          <span class="select-wrap">
+            <select id="plotFilter" name="plot_id">
+              <option value="">全部样本</option>
+            </select>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 8 4 4 4-4"/></svg>
+          </span>
+        </label>
+
+        <label class="field">
+          <span class="field__label">统计年份</span>
+          <span class="select-wrap">
+            <select id="yearFilter" name="year">
+              <option value="">全部年份</option>
+            </select>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 8 4 4 4-4"/></svg>
+          </span>
+        </label>
+
+        <label class="field">
+          <span class="field__label">气象季节</span>
+          <span class="select-wrap">
+            <select id="seasonFilter" name="season">
+              <option value="">全部季节</option>
+              <option value="spring">春季 · 3–5月</option>
+              <option value="summer">夏季 · 6–8月</option>
+              <option value="autumn">秋季 · 9–11月</option>
+              <option value="winter">冬季 · 12–2月</option>
+            </select>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 8 4 4 4-4"/></svg>
+          </span>
+        </label>
+
+        <div class="date-fields">
+          <label class="field">
+            <span class="field__label">开始日期</span>
+            <input id="startDateFilter" name="start_date" type="date">
+          </label>
+          <label class="field">
+            <span class="field__label">结束日期</span>
+            <input id="endDateFilter" name="end_date" type="date">
+          </label>
+        </div>
+
+        <button class="button button--filter" type="submit">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+          应用筛选
+        </button>
+      </form>
+
+      <div class="sidebar-spacer"></div>
+      <div class="connection-card" id="connectionCard">
+        <div class="connection-card__row">
+          <span class="status-dot is-checking" id="healthDot" aria-hidden="true"></span>
+          <div>
+            <strong id="healthText">正在连接分析服务</strong>
+            <span id="healthSubtext">检查 /api/health</span>
+          </div>
+        </div>
+        <div class="connection-card__meta">
+          <span>页面刷新</span>
+          <time id="lastRefreshTime">--:--</time>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content" id="mainContent" tabindex="-1">
+      <header class="topbar">
+        <div class="topbar__title">
+          <button class="icon-button menu-button" id="openSidebarBtn" type="button" aria-label="打开筛选面板" aria-controls="sidebar" aria-expanded="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+          <div>
+            <p class="breadcrumb"><span>农业环境</span><i>/</i><strong>气象研判工作台</strong></p>
+            <h1>农田气象时序分析 Agent</h1>
+          </div>
+        </div>
+        <div class="topbar__actions">
+          <button class="button button--ghost" id="importOpenBtn" type="button" aria-label="导入 CSV" title="导入 CSV">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 14v5h14v-5"/></svg>
+            <span>导入 CSV</span>
+          </button>
+          <div class="export-menu-wrap">
+            <button class="button button--ghost" id="exportMenuBtn" type="button" aria-label="打开导出菜单" title="导出" aria-haspopup="menu" aria-expanded="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></svg>
+              <span>导出</span>
+              <svg class="chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m6 8 4 4 4-4"/></svg>
+            </button>
+            <div class="export-menu" id="exportMenu" role="menu" hidden>
+              <button type="button" role="menuitem" data-export="csv">
+                <span class="file-icon file-icon--csv">CSV</span>
+                <span><strong>季节统计数据</strong><small>标准 CSV 格式</small></span>
+              </button>
+              <button type="button" role="menuitem" data-export="report">
+                <span class="file-icon file-icon--md">MD</span>
+                <span><strong>完整分析报告</strong><small>Markdown 格式</small></span>
+              </button>
+              <button type="button" role="menuitem" data-export="xlsx">
+                <span class="file-icon file-icon--csv">XLSX</span>
+                <span><strong>工程分析工作簿</strong><small>摘要、统计、风险与图表</small></span>
+              </button>
+            </div>
+          </div>
+          <button class="button button--primary" id="runAnalysisBtn" type="button" aria-label="运行分析" title="运行分析">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg>
+            <span>运行分析</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <section class="hero-card" id="overviewSection" aria-labelledby="heroTitle">
+          <div class="hero-card__content">
+            <span class="hero-kicker"><i></i> AGRI-WEATHER INTELLIGENCE</span>
+            <h2 id="heroTitle">从网格日值到季节决策，<br>让每一项判断都能追到来源。</h2>
+            <p id="analysisNarrative">正在读取气象日值数据并建立分析视图…</p>
+            <div class="hero-meta">
+              <div>
+                <span>空间范围</span>
+                <strong id="heroPlotScope">-- 个样本</strong>
+              </div>
+              <div>
+                <span>数据时段</span>
+                <strong id="heroDateScope">--</strong>
+              </div>
+              <div>
+                <span>最近分析</span>
+                <strong id="heroAnalysisTime">尚未运行</strong>
+              </div>
+              <div>
+                <span>数据来源</span>
+                <a id="heroDataSource" href="#" target="_blank" rel="noreferrer">正在核验来源</a>
+              </div>
+            </div>
+          </div>
+          <div class="hero-card__visual" aria-hidden="true">
+            <div class="sun-disc"></div>
+            <svg class="field-lines" viewBox="0 0 420 240" preserveAspectRatio="none">
+              <path d="M-30 238C64 137 157 109 450 106"/>
+              <path d="M-20 250C96 151 204 136 461 145"/>
+              <path d="M22 260C137 181 254 171 460 188"/>
+              <path d="M103 260C206 210 314 208 450 222"/>
+              <path d="M99 235c62-54 88-96 99-139M184 235c38-50 57-98 61-146M276 236c8-54 9-104-2-151M357 238c-13-49-27-94-53-143"/>
+            </svg>
+            <div class="weather-glyph weather-glyph--cloud"><i></i><i></i><i></i></div>
+          </div>
+        </section>
+
+        <section class="source-ledger" id="sourceSection" aria-labelledby="sourceTitle">
+          <header class="source-ledger__header">
+            <div class="source-ledger__identity">
+              <span class="source-ledger__mark" aria-hidden="true">源</span>
+              <div>
+                <span class="eyebrow">DATA PROVENANCE</span>
+                <h2 id="sourceTitle">来源、口径与文件校验</h2>
+                <p id="sourceDatasetName">正在读取来源登记信息…</p>
+              </div>
+            </div>
+            <div class="source-ledger__state" id="sourceState" data-state="checking" role="status">
+              <i aria-hidden="true"></i>
+              <span>核验状态</span>
+              <strong id="sourceVerification">读取中</strong>
+            </div>
+          </header>
+          <div class="source-ledger__facts">
+            <div class="source-fact source-fact--provider">
+              <span>提供方 / 接口</span>
+              <strong id="sourceProvider">--</strong>
+              <small id="sourceApiVersion">--</small>
+            </div>
+            <div class="source-fact">
+              <span>产品类型</span>
+              <strong id="sourceProductType">--</strong>
+              <small id="sourceOfficialProducts">--</small>
+            </div>
+            <div class="source-fact">
+              <span>空间样本</span>
+              <strong id="sourcePointCount">--</strong>
+              <small id="sourceRecordCount">--</small>
+            </div>
+            <div class="source-fact">
+              <span>数据时段 / 时间标准</span>
+              <strong id="sourcePeriod">--</strong>
+              <small id="sourceTimeStandard">--</small>
+            </div>
+            <div class="source-fact">
+              <span>数据获取时间</span>
+              <strong id="sourceRetrievedAt">--</strong>
+              <small id="sourceImportTime">入库时间 --</small>
+            </div>
+          </div>
+          <div class="source-ledger__notice">
+            <span class="source-ledger__notice-icon" aria-hidden="true">i</span>
+            <p><strong>真实性边界</strong><span id="sourceSpatialNote">来源信息加载后显示产品空间口径。</span></p>
+            <div class="source-ledger__links">
+              <a id="sourceLandingLink" href="#" target="_blank" rel="noreferrer">官方主页 ↗</a>
+              <a id="sourceDocsLink" href="#" target="_blank" rel="noreferrer">API 文档 ↗</a>
+              <a id="sourceQueryLink" href="#" target="_blank" rel="noreferrer">查询样例 ↗</a>
+            </div>
+          </div>
+          <div class="source-ledger__integrity">
+            <span>文件完整性</span>
+            <code id="sourceHash">SHA-256 --</code>
+            <small id="sourceRawFiles">原始快照 --</small>
+          </div>
+        </section>
+
+        <section class="analysis-failure" id="analysisFailureBanner" role="alert" aria-labelledby="analysisFailureTitle" hidden>
+          <span class="analysis-failure__icon" aria-hidden="true">!</span>
+          <div class="analysis-failure__content">
+            <span>ANALYSIS FAILED</span>
+            <h2 id="analysisFailureTitle">分析任务未成功完成</h2>
+            <p id="analysisFailureMessage">该任务未生成可用的季节统计、风险研判或证据结论。</p>
+          </div>
+          <strong class="analysis-failure__guard">问答与结果导出已锁定</strong>
+        </section>
+
+        <section class="metric-grid" aria-label="核心气象指标">
+          <article class="metric-card metric-card--temperature">
+            <div class="metric-card__top">
+              <div class="metric-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14.8V5a2 2 0 0 1 4 0v9.8a4 4 0 1 1-4 0Z"/><path d="M12 8v9"/></svg></div>
+              <span class="metric-trend" id="temperatureTrend">统计期均值</span>
+            </div>
+            <p>区域日均温度</p>
+            <div class="metric-value"><strong id="avgTemperature">--</strong><span>°C</span></div>
+            <div class="metric-foot"><span id="temperatureRange">范围 --</span><span class="spark" id="temperatureSpark" aria-hidden="true"></span></div>
+          </article>
+
+          <article class="metric-card metric-card--rain">
+            <div class="metric-card__top">
+              <div class="metric-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 16a4 4 0 0 1 .7-7.9A5.5 5.5 0 0 1 18.4 10 3 3 0 0 1 18 16H7Z"/><path d="m9 19-1 2M14 19l-1 2M19 19l-1 2"/></svg></div>
+              <span class="metric-trend" id="rainyDayBadge">日均≥0.1 mm · --</span>
+            </div>
+            <p>区域平均累计降水</p>
+            <div class="metric-value"><strong id="totalRainfall">--</strong><span>mm</span></div>
+            <div class="metric-foot"><span id="rainfallDaily">日均 --</span><span class="spark" id="rainSpark" aria-hidden="true"></span></div>
+          </article>
+
+          <article class="metric-card metric-card--sunlight">
+            <div class="metric-card__top">
+              <div class="metric-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg></div>
+              <span class="metric-trend">太阳辐射</span>
+            </div>
+            <p>日均太阳辐射</p>
+            <div class="metric-value"><strong id="avgSolar">--</strong><span>W/m²</span></div>
+            <div class="metric-foot"><span id="solarPeak">峰值 --</span><span class="spark" id="solarSpark" aria-hidden="true"></span></div>
+          </article>
+
+          <article class="metric-card metric-card--quality">
+            <div class="metric-card__top">
+              <div class="metric-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 7 3v5c0 4.8-2.9 8.1-7 10-4.1-1.9-7-5.2-7-10V6l7-3Z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg></div>
+              <span class="metric-trend metric-trend--good" id="qualityLabel">入库校验 --</span>
+            </div>
+            <p>数据入库质量</p>
+            <div class="metric-value"><strong id="qualityScore">--</strong><span>/100</span></div>
+            <div class="metric-foot"><span id="validRecords">-- 条有效记录</span><span class="spark" id="qualitySpark" aria-hidden="true"></span></div>
+          </article>
+
+          <article class="metric-card metric-card--risk">
+            <div class="metric-card__top">
+              <div class="metric-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.8 19h18.4L12 3Z"/><path d="M12 9v4M12 16h.01"/></svg></div>
+              <span class="metric-trend" id="riskRuleBadge">-- 类规则</span>
+            </div>
+            <p>筛选期风险事件</p>
+            <div class="metric-value"><strong id="activeRiskKpi">--</strong><span>项</span></div>
+            <div class="metric-foot"><span id="riskKpiFoot">等待分析</span><span class="spark" id="riskSpark" aria-hidden="true"></span></div>
+          </article>
+          <p class="metric-method-note"><strong>统计口径</strong> 区域指标先按日对空间样本取均值；降水再跨日累计。太阳辐射由日能量 <code>MJ/m²/day × 1,000,000 ÷ 86,400</code> 换算为日均功率 <code>W/m²</code>。风险事件为当前分析筛选期内累计。</p>
+        </section>
+
+        <section class="section-block" id="trendSection" aria-labelledby="trendTitle">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">TIME SERIES</span>
+              <h2 id="trendTitle">气象时序趋势</h2>
+              <p>按筛选范围聚合气象日值，识别网格产品中的时间变化。</p>
+            </div>
+            <div class="range-tabs" role="group" aria-label="图表聚合粒度">
+              <button type="button" data-granularity="day">日</button>
+              <button type="button" class="is-active" data-granularity="month">月</button>
+            </div>
+          </div>
+
+          <div class="chart-grid">
+            <article class="panel chart-card chart-card--wide">
+              <header class="panel__header">
+                <div>
+                  <span class="chart-legend chart-legend--temperature"><i></i> 温度</span>
+                  <h3>温度变化曲线</h3>
+                </div>
+                <div class="chart-summary">
+                  <span>波动幅度</span><strong id="temperatureAmplitude">-- °C</strong>
+                </div>
+              </header>
+              <div class="canvas-wrap">
+                <canvas id="temperatureChart" role="img" aria-label="温度变化时序折线图">浏览器未启用 Canvas。</canvas>
+                <div class="chart-tooltip" id="temperatureTooltip" role="status" hidden></div>
+                <div class="chart-empty" data-empty-for="temperatureChart" hidden>当前范围暂无温度日值</div>
+              </div>
+            </article>
+
+            <article class="panel chart-card">
+              <header class="panel__header">
+                <div>
+                  <span class="chart-legend chart-legend--rain"><i></i> 降水</span>
+                  <h3>降水分布</h3>
+                </div>
+                <span class="panel-tag" id="rainPatternTag">等待分析</span>
+              </header>
+              <div class="canvas-wrap canvas-wrap--compact">
+                <canvas id="rainfallChart" role="img" aria-label="降水量时序柱状图">浏览器未启用 Canvas。</canvas>
+                <div class="chart-tooltip" id="rainfallTooltip" role="status" hidden></div>
+                <div class="chart-empty" data-empty-for="rainfallChart" hidden>当前范围暂无降水日值</div>
+              </div>
+            </article>
+
+            <article class="panel chart-card">
+              <header class="panel__header">
+                <div>
+                  <span class="chart-legend chart-legend--sun"><i></i> 光照</span>
+                  <h3>太阳辐射强度</h3>
+                </div>
+                <span class="panel-tag panel-tag--sun" id="solarPatternTag">等待分析</span>
+              </header>
+              <div class="canvas-wrap canvas-wrap--compact">
+                <canvas id="solarChart" role="img" aria-label="太阳辐射时序面积图">浏览器未启用 Canvas。</canvas>
+                <div class="chart-tooltip" id="solarTooltip" role="status" hidden></div>
+                <div class="chart-empty" data-empty-for="solarChart" hidden>当前范围暂无太阳辐射日值</div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section-block" id="seasonSection" aria-labelledby="seasonTitle">
+          <div class="section-heading section-heading--with-action">
+            <div>
+              <span class="eyebrow">SEASONAL PROFILE</span>
+              <h2 id="seasonTitle">四季气象特征对比</h2>
+              <p>按照气象季节划分，比较区域日均温度、区域平均累计降水和日均太阳辐射。</p>
+            </div>
+            <span class="method-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16M7 16V8M12 16V4M17 16v-5"/></svg> 春 3–5月 · 夏 6–8月 · 秋 9–11月 · 冬 12–2月</span>
+          </div>
+
+          <div class="season-layout">
+            <div class="season-card-grid" id="seasonCards" aria-live="polite">
+              <article class="season-card season-card--spring" data-season="spring">
+                <div class="season-card__head"><span class="season-symbol">芽</span><div><span>SPRING</span><h3>春季</h3></div></div>
+                <dl><div><dt>日均温度</dt><dd data-metric="temperature">--</dd></div><div><dt>平均累计降水</dt><dd data-metric="rainfall">--</dd></div><div><dt>日均辐射</dt><dd data-metric="solar">--</dd></div></dl>
+                <p data-metric="feature">等待分析结果</p>
+              </article>
+              <article class="season-card season-card--summer" data-season="summer">
+                <div class="season-card__head"><span class="season-symbol">日</span><div><span>SUMMER</span><h3>夏季</h3></div></div>
+                <dl><div><dt>日均温度</dt><dd data-metric="temperature">--</dd></div><div><dt>平均累计降水</dt><dd data-metric="rainfall">--</dd></div><div><dt>日均辐射</dt><dd data-metric="solar">--</dd></div></dl>
+                <p data-metric="feature">等待分析结果</p>
+              </article>
+              <article class="season-card season-card--autumn" data-season="autumn">
+                <div class="season-card__head"><span class="season-symbol">穗</span><div><span>AUTUMN</span><h3>秋季</h3></div></div>
+                <dl><div><dt>日均温度</dt><dd data-metric="temperature">--</dd></div><div><dt>平均累计降水</dt><dd data-metric="rainfall">--</dd></div><div><dt>日均辐射</dt><dd data-metric="solar">--</dd></div></dl>
+                <p data-metric="feature">等待分析结果</p>
+              </article>
+              <article class="season-card season-card--winter" data-season="winter">
+                <div class="season-card__head"><span class="season-symbol">霜</span><div><span>WINTER</span><h3>冬季</h3></div></div>
+                <dl><div><dt>日均温度</dt><dd data-metric="temperature">--</dd></div><div><dt>平均累计降水</dt><dd data-metric="rainfall">--</dd></div><div><dt>日均辐射</dt><dd data-metric="solar">--</dd></div></dl>
+                <p data-metric="feature">等待分析结果</p>
+              </article>
+            </div>
+
+            <article class="panel season-chart-panel">
+              <header class="panel__header">
+                <div><span class="eyebrow">NORMALIZED INDEX</span><h3>季节要素强度</h3></div>
+                <div class="season-metric-tabs" role="group" aria-label="季节对比指标">
+                  <button type="button" class="is-active" data-season-metric="temperature">温度</button>
+                  <button type="button" data-season-metric="rainfall">降水</button>
+                  <button type="button" data-season-metric="solar">光照</button>
+                </div>
+              </header>
+              <div class="canvas-wrap canvas-wrap--season">
+                <canvas id="seasonChart" role="img" aria-label="四季气象指标对比图">浏览器未启用 Canvas。</canvas>
+                <div class="chart-tooltip" id="seasonTooltip" role="status" hidden></div>
+                <div class="chart-empty" data-empty-for="seasonChart" hidden>运行分析后展示四季对比</div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section-block" id="insightSection" aria-labelledby="insightTitle">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">QUALITY &amp; RISK</span>
+              <h2 id="insightTitle">数据质量与农业风险</h2>
+              <p>同时呈现入库完整性、异常记录及可追溯的风险证据；质量分不代表观测准确率。</p>
+            </div>
+            <button class="button button--small button--ghost" id="scrollAgentBtn" type="button">向 Agent 追问</button>
+          </div>
+
+          <div class="insight-grid">
+            <article class="panel quality-panel">
+              <header class="panel__header"><div><span class="eyebrow">INGESTION QUALITY</span><h3>入库质量诊断</h3></div><span class="panel-tag" id="qualityStatusTag">检查中</span></header>
+              <div class="quality-overview">
+                <div class="quality-ring" id="qualityRing" style="--score: 0">
+                  <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="quality-ring__track" cx="60" cy="60" r="49"/><circle class="quality-ring__value" cx="60" cy="60" r="49"/></svg>
+                  <div><strong id="qualityRingValue">--</strong><span>入库质量分</span></div>
+                </div>
+                <dl class="quality-stats">
+                  <div><dt>缺失字段</dt><dd id="missingCount">--</dd></div>
+                  <div><dt>疑似异常</dt><dd id="suspectCount">--</dd></div>
+                  <div><dt>重复记录</dt><dd id="duplicateCount">--</dd></div>
+                  <div><dt>异常点</dt><dd id="anomalyCount">--</dd></div>
+                </dl>
+              </div>
+              <div class="quality-note" id="qualityNote">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM12 8v5M12 16h.01"/></svg>
+                <p>正在检查字段完整性、重复记录与数值范围；该分数不衡量遥感/再分析产品的测量误差。</p>
+              </div>
+            </article>
+
+            <article class="panel risk-panel">
+              <header class="panel__header"><div><span class="eyebrow">AGRICULTURAL ALERT</span><h3>风险研判</h3></div><span class="risk-count" id="riskCount">0 项</span></header>
+              <div class="risk-list" id="riskList" aria-live="polite">
+                <div class="empty-inline"><span>✓</span><p><strong>等待分析结果</strong>运行分析后将按证据展示高温、强降水、干旱与低光照风险。</p></div>
+              </div>
+            </article>
+
+            <article class="panel conclusion-panel">
+              <header class="panel__header"><div><span class="eyebrow">AGENT FINDINGS</span><h3>关键结论</h3></div><span class="panel-tag panel-tag--dark">证据驱动</span></header>
+              <ol class="conclusion-list" id="conclusionList">
+                <li><span>01</span><p>运行分析后，系统将在此生成带统计依据的季节气象结论。</p></li>
+              </ol>
+            </article>
+          </div>
+        </section>
+
+        <section class="section-block agent-history-grid" id="agentSection" aria-labelledby="agentTitle">
+          <article class="panel agent-panel">
+            <header class="agent-panel__header">
+              <div class="agent-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v3M7 8h10a3 3 0 0 1 3 3v7H4v-7a3 3 0 0 1 3-3ZM8 12h.01M16 12h.01M9 16h6"/></svg></div>
+              <div><span class="eyebrow">ANALYSIS AGENT</span><h2 id="agentTitle">和气象分析 Agent 聊聊</h2><p>像问同事一样直接说，我会结合当前数据给出结论和依据。</p></div>
+              <span class="online-badge" id="agentStatusBadge" data-mode="checking" role="status" aria-live="polite" title="正在检测 Agent 运行模式"><i aria-hidden="true"></i><span id="agentStatusText">检测中</span></span>
+            </header>
+            <div class="chat-window" id="chatWindow" aria-live="polite" aria-label="Agent 对话记录">
+              <div class="chat-message chat-message--agent">
+                <div class="chat-message__avatar">A</div>
+                <div class="chat-bubble">
+                  <p>你好呀，我是你的农业气象分析搭档。想先看降水、温度变化，还是农业风险？我会同时标出数据口径和证据来源。</p>
+                  <time>随时可以开始</time>
+                </div>
+              </div>
+            </div>
+            <div class="suggestion-chips" id="suggestionChips" aria-label="推荐问题">
+              <button type="button">哪个季节的降水最集中？</button>
+              <button type="button">是否存在连续干旱风险？</button>
+              <button type="button">哪个季节光照最佳，是否有低光照风险？</button>
+            </div>
+            <form class="agent-input" id="agentForm">
+              <label class="sr-only" for="agentQuestion">输入分析问题</label>
+              <textarea id="agentQuestion" rows="1" maxlength="500" placeholder="想看什么直接问，例如：夏季高温和降水会带来什么风险？"></textarea>
+              <button type="submit" aria-label="发送问题" title="发送问题">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 4 17 8-17 8 3-8-3-8Zm3 8h14"/></svg>
+              </button>
+            </form>
+          </article>
+
+          <article class="panel history-panel">
+            <header class="panel__header">
+              <div><span class="eyebrow">AUDIT TRAIL</span><h3>分析任务记录</h3></div>
+              <button class="icon-button" id="refreshHistoryBtn" type="button" aria-label="刷新分析记录" title="刷新"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6v5h-5M4 18v-5h5M18.5 9A7 7 0 0 0 6.8 6.8L4 10M5.5 15A7 7 0 0 0 17.2 17.2L20 14"/></svg></button>
+            </header>
+            <div class="history-list" id="historyList" aria-live="polite">
+              <div class="history-empty"><span>⌁</span><p>暂无分析记录</p><small>点击“运行分析”创建首个任务</small></div>
+            </div>
+          </article>
+        </section>
+
+        <section class="section-block mcp-lab" id="mcpSection" aria-labelledby="mcpTitle">
+          <header class="section-heading section-heading--with-action">
+            <div>
+              <span class="eyebrow">MODEL CONTEXT PROTOCOL</span>
+              <h2 id="mcpTitle">FastMCP 工具调用实验</h2>
+              <p>通过 FastMCP Client 动态发现并调用农业气象工具，结果直接来自当前 SQLite 数据和统一分析服务。</p>
+            </div>
+            <span class="mcp-status" id="mcpStatus" data-state="checking" role="status"><i></i><span>正在发现工具</span></span>
+          </header>
+
+          <div class="mcp-flow" aria-label="FastMCP 调用链路">
+            <span>Web 控制台</span><b>→</b><span>FastAPI 网关</span><b>→</b><span class="is-accent">FastMCP Client</span><b>→</b><span>3 个 MCP Tools</span><b>→</b><span>SQLite + AnalysisService</span>
+          </div>
+
+          <div class="mcp-grid">
+            <article class="panel mcp-tool-panel">
+              <header class="panel__header">
+                <div><span class="eyebrow">TOOL DISCOVERY</span><h3>服务端工具清单</h3></div>
+                <span class="panel-tag" id="mcpToolCount">0 tools</span>
+              </header>
+              <div class="mcp-tool-list" id="mcpToolList" aria-live="polite">
+                <div class="mcp-empty">正在读取 /api/fastmcp/tools…</div>
+              </div>
+              <footer class="mcp-runtime" id="mcpRuntime">FastMCP -- · in-memory transport</footer>
+            </article>
+
+            <article class="panel mcp-call-panel">
+              <header class="panel__header">
+                <div><span class="eyebrow">LIVE TOOL CALL</span><h3>真实调用工作台</h3></div>
+                <span class="panel-tag panel-tag--dark">非模拟</span>
+              </header>
+              <form class="mcp-form" id="mcpCallForm">
+                <label class="field field--wide"><span class="field__label">MCP 工具</span><span class="select-wrap"><select id="mcpToolSelect"><option value="get_weather_overview">get_weather_overview</option><option value="analyze_agricultural_risks">analyze_agricultural_risks</option><option value="query_weather_observations">query_weather_observations</option></select></span></label>
+                <label class="field"><span class="field__label">年份</span><input id="mcpYear" type="number" min="1900" max="2100" value="2024"></label>
+                <label class="field"><span class="field__label">季节</span><span class="select-wrap"><select id="mcpSeason"><option value="">全年</option><option value="春季">春季</option><option value="夏季" selected>夏季</option><option value="秋季">秋季</option><option value="冬季">冬季</option></select></span></label>
+                <label class="field"><span class="field__label">开始日期</span><input id="mcpStartDate" type="date"></label>
+                <label class="field"><span class="field__label">结束日期</span><input id="mcpEndDate" type="date"></label>
+                <label class="field field--wide"><span class="field__label">返回上限（风险事件/观测记录）</span><input id="mcpLimit" type="number" min="1" max="50" value="6"></label>
+                <button class="button button--primary mcp-call-button" id="mcpCallBtn" type="submit"><span>调用 FastMCP 工具</span></button>
+              </form>
+              <div class="mcp-result" id="mcpResult" data-state="idle" aria-live="polite">
+                <div class="mcp-result__meta"><span id="mcpTraceId">等待调用</span><span id="mcpElapsed">-- ms</span></div>
+                <div class="mcp-result__summary" id="mcpResultSummary">选择工具并点击调用，系统将显示真实协议结果与追踪号。</div>
+                <pre id="mcpResultJson" tabindex="0">{ "status": "ready" }</pre>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section-block" id="dataSection" aria-labelledby="dataTitle">
+          <article class="panel data-panel">
+            <header class="panel__header data-panel__header">
+              <div><span class="eyebrow">SOURCE RECORDS</span><h2 id="dataTitle">气象日值样本</h2><p>显示当前筛选范围最近的数据记录；NASA 数据为网格产品而非地面站实测。</p></div>
+              <div class="record-count"><strong id="recordTotal">--</strong><span>条记录</span></div>
+            </header>
+            <div class="table-wrap" tabindex="0" role="region" aria-label="气象日值数据表，可横向滚动">
+              <table>
+                <thead><tr><th scope="col">数据日期</th><th scope="col">空间样本</th><th scope="col">温度</th><th scope="col">降水</th><th scope="col">太阳辐射</th><th scope="col">湿度</th><th scope="col">入库质量</th></tr></thead>
+                <tbody id="observationTableBody"><tr><td colspan="7" class="table-empty">正在加载气象日值…</td></tr></tbody>
+              </table>
+            </div>
+            <div class="table-footer"><span id="tableRange">--</span><button class="text-button" id="loadMoreBtn" type="button" hidden>加载更多</button></div>
+          </article>
+        </section>
+
+        <footer class="page-footer">
+          <p>农田气象时序分析 Agent · 农业环境数据分析工程</p>
+          <p><span class="status-dot is-online" aria-hidden="true"></span> 本地分析服务 <span id="footerVersion">v1.0</span></p>
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <dialog class="modal" id="importDialog" aria-labelledby="importTitle">
+    <form method="dialog" class="modal__surface" id="importForm">
+      <header class="modal__header">
+        <div><span class="eyebrow">DATA INGESTION</span><h2 id="importTitle">导入农业气象 CSV</h2><p>上传后将执行字段校验、入库质量检查并写入数据表；外部来源需另行登记。</p></div>
+        <button class="icon-button" id="importCloseBtn" type="button" aria-label="关闭导入窗口"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </header>
+      <div class="drop-zone" id="dropZone" tabindex="0" role="button" aria-controls="csvFileInput">
+        <input id="csvFileInput" name="file" type="file" accept=".csv,text/csv" hidden>
+        <div class="drop-zone__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 9l5-5 5 5M5 15v5h14v-5"/></svg></div>
+        <strong>拖放 CSV 文件到此处</strong>
+        <span>或点击选择文件 · 最大 20 MB</span>
+        <small>必需字段：timestamp、plot_id、temperature_c、precipitation_mm、solar_radiation_wm2</small>
+      </div>
+      <div class="selected-file" id="selectedFile" hidden>
+        <span class="file-icon file-icon--csv">CSV</span>
+        <div><strong id="selectedFileName">--</strong><span id="selectedFileMeta">--</span></div>
+        <button class="icon-button" id="clearFileBtn" type="button" aria-label="移除文件"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </div>
+      <label class="check-field"><input id="replaceDataCheck" type="checkbox"><span><i></i><strong>替换现有数据</strong><small>勾选后将以本次文件重建气象数据集，并清除不匹配的来源登记</small></span></label>
+      <footer class="modal__footer"><button class="button button--ghost" id="importCancelBtn" type="button">取消</button><button class="button button--primary" id="importSubmitBtn" type="submit" disabled><span>开始导入</span></button></footer>
+    </form>
+  </dialog>
+
+  <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+  <div class="global-loader" id="globalLoader" role="status" aria-live="polite" hidden><div class="loader-orbit"><i></i><i></i><i></i></div><strong id="globalLoaderText">正在处理…</strong></div>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

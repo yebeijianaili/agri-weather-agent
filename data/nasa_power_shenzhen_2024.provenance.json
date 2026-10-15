@@ -1,0 +1,275 @@
+{
+  "source_key": "nasa-power-shenzhen-daily-20240101-20241231",
+  "provider": "NASA Langley Research Center POWER Project",
+  "dataset_name": "NASA/POWER Source Native Resolution Daily Data",
+  "api_name": "POWER Daily API",
+  "api_version": "v2.9.7",
+  "official_sources": [
+    "SYN1DEG",
+    "MERRA2",
+    "POWER"
+  ],
+  "landing_page": "https://power.larc.nasa.gov/",
+  "api_documentation": "https://power.larc.nasa.gov/docs/services/api/temporal/daily/",
+  "query_urls": [
+    "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CPRECTOTCORR%2CALLSKY_SFC_SW_DWN%2CRH2M&community=AG&longitude=113.9359&latitude=22.7489&start=20240101&end=20241231&format=JSON",
+    "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CPRECTOTCORR%2CALLSKY_SFC_SW_DWN%2CRH2M&community=AG&longitude=114.2469&latitude=22.7215&start=20240101&end=20241231&format=JSON",
+    "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CPRECTOTCORR%2CALLSKY_SFC_SW_DWN%2CRH2M&community=AG&longitude=114.4797&latitude=22.5963&start=20240101&end=20241231&format=JSON"
+  ],
+  "retrieved_at": "2026-08-22T18:03:19+08:00",
+  "time_standard": "LST",
+  "community": "AG",
+  "period": {
+    "start": "2024-01-01",
+    "end": "2024-12-31",
+    "days": 366
+  },
+  "parameters": {
+    "T2M": {
+      "units": "C",
+      "longname": "Temperature at 2 Meters"
+    },
+    "PRECTOTCORR": {
+      "units": "mm/day",
+      "longname": "Precipitation Corrected"
+    },
+    "ALLSKY_SFC_SW_DWN": {
+      "units": "MJ/m^2/day",
+      "longname": "All Sky Surface Shortwave Downward Irradiance"
+    },
+    "RH2M": {
+      "units": "%",
+      "longname": "Relative Humidity at 2 Meters"
+    }
+  },
+  "normalized_schema": {
+    "T2M": "temperature_c",
+    "PRECTOTCORR": "precipitation_mm",
+    "ALLSKY_SFC_SW_DWN": "solar_radiation_wm2 (daily energy converted to daily mean power)",
+    "RH2M": "humidity_pct"
+  },
+  "spatial_note": "These are NASA POWER gridded point values at the requested Shenzhen coordinates, not on-site station observations.",
+  "quality_note": "Values are official NASA POWER gridded satellite/reanalysis products. The stored 2026-08-22 JSON snapshots preserve the complete parsed payload but are not byte-for-byte HTTP captures. The local quality flag only records ingestion completeness and range checks; it is not an upstream measurement-accuracy rating.",
+  "points": [
+    {
+      "plot_id": "NASA-GM 光明网格",
+      "label": "深圳光明网格",
+      "latitude": 22.7489,
+      "longitude": 113.9359,
+      "requested_coordinate": {
+        "latitude": 22.7489,
+        "longitude": 113.9359
+      },
+      "response_geometry": {
+        "type": "Point",
+        "coordinates": [
+          113.936,
+          22.749,
+          17.55
+        ]
+      },
+      "header": {
+        "title": "NASA/POWER Source Native Resolution Daily Data",
+        "api": {
+          "version": "v2.9.7",
+          "name": "POWER Daily API"
+        },
+        "sources": [
+          "SYN1DEG",
+          "MERRA2",
+          "POWER"
+        ],
+        "fill_value": -999.0,
+        "time_standard": "LST",
+        "start": "20240101",
+        "end": "20241231"
+      },
+      "parameters": {
+        "T2M": {
+          "units": "C",
+          "longname": "Temperature at 2 Meters"
+        },
+        "PRECTOTCORR": {
+          "units": "mm/day",
+          "longname": "Precipitation Corrected"
+        },
+        "ALLSKY_SFC_SW_DWN": {
+          "units": "MJ/m^2/day",
+          "longname": "All Sky Surface Shortwave Downward Irradiance"
+        },
+        "RH2M": {
+          "units": "%",
+          "longname": "Relative Humidity at 2 Meters"
+        }
+      },
+      "record_count": 366,
+      "solar_conversion": {
+        "from": "MJ/m^2/day",
+        "to": "W/m² daily mean",
+        "formula": "MJ/m²/day × 1,000,000 ÷ 86,400"
+      },
+      "query_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CPRECTOTCORR%2CALLSKY_SFC_SW_DWN%2CRH2M&community=AG&longitude=113.9359&latitude=22.7489&start=20240101&end=20241231&format=JSON",
+      "raw_file": "data\\raw\\nasa_power_2024\\nasa-gm_20240101_20241231.json"
+    },
+    {
+      "plot_id": "NASA-LG 龙岗网格",
+      "label": "深圳龙岗网格",
+      "latitude": 22.7215,
+      "longitude": 114.2469,
+      "requested_coordinate": {
+        "latitude": 22.7215,
+        "longitude": 114.2469
+      },
+      "response_geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.247,
+          22.721,
+          53.17
+        ]
+      },
+      "header": {
+        "title": "NASA/POWER Source Native Resolution Daily Data",
+        "api": {
+          "version": "v2.9.7",
+          "name": "POWER Daily API"
+        },
+        "sources": [
+          "SYN1DEG",
+          "MERRA2",
+          "POWER"
+        ],
+        "fill_value": -999.0,
+        "time_standard": "LST",
+        "start": "20240101",
+        "end": "20241231"
+      },
+      "parameters": {
+        "T2M": {
+          "units": "C",
+          "longname": "Temperature at 2 Meters"
+        },
+        "PRECTOTCORR": {
+          "units": "mm/day",
+          "longname": "Precipitation Corrected"
+        },
+        "ALLSKY_SFC_SW_DWN": {
+          "units": "MJ/m^2/day",
+          "longname": "All Sky Surface Shortwave Downward Irradiance"
+        },
+        "RH2M": {
+          "units": "%",
+          "longname": "Relative Humidity at 2 Meters"
+        }
+      },
+      "record_count": 366,
+      "solar_conversion": {
+        "from": "MJ/m^2/day",
+        "to": "W/m² daily mean",
+        "formula": "MJ/m²/day × 1,000,000 ÷ 86,400"
+      },
+      "query_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CPRECTOTCORR%2CALLSKY_SFC_SW_DWN%2CRH2M&community=AG&longitude=114.2469&latitude=22.7215&start=20240101&end=20241231&format=JSON",
+      "raw_file": "data\\raw\\nasa_power_2024\\nasa-lg_20240101_20241231.json"
+    },
+    {
+      "plot_id": "NASA-DP 大鹏网格",
+      "label": "深圳大鹏网格",
+      "latitude": 22.5963,
+      "longitude": 114.4797,
+      "requested_coordinate": {
+        "latitude": 22.5963,
+        "longitude": 114.4797
+      },
+      "response_geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.48,
+          22.596,
+          53.17
+        ]
+      },
+      "header": {
+        "title": "NASA/POWER Source Native Resolution Daily Data",
+        "api": {
+          "version": "v2.9.7",
+          "name": "POWER Daily API"
+        },
+        "sources": [
+          "SYN1DEG",
+          "MERRA2",
+          "POWER"
+        ],
+        "fill_value": -999.0,
+        "time_standard": "LST",
+        "start": "20240101",
+        "end": "20241231"
+      },
+      "parameters": {
+        "T2M": {
+          "units": "C",
+          "longname": "Temperature at 2 Meters"
+        },
+        "PRECTOTCORR": {
+          "units": "mm/day",
+          "longname": "Precipitation Corrected"
+        },
+        "ALLSKY_SFC_SW_DWN": {
+          "units": "MJ/m^2/day",
+          "longname": "All Sky Surface Shortwave Downward Irradiance"
+        },
+        "RH2M": {
+          "units": "%",
+          "longname": "Relative Humidity at 2 Meters"
+        }
+      },
+      "record_count": 366,
+      "solar_conversion": {
+        "from": "MJ/m^2/day",
+        "to": "W/m² daily mean",
+        "formula": "MJ/m²/day × 1,000,000 ÷ 86,400"
+      },
+      "query_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CPRECTOTCORR%2CALLSKY_SFC_SW_DWN%2CRH2M&community=AG&longitude=114.4797&latitude=22.5963&start=20240101&end=20241231&format=JSON",
+      "raw_file": "data\\raw\\nasa_power_2024\\nasa-dp_20240101_20241231.json"
+    }
+  ],
+  "raw_files": [
+    {
+      "path": "data\\raw\\nasa_power_2024\\nasa-gm_20240101_20241231.json",
+      "sha256": "23b62c8932d8ac07a485948a7a9a9856b47dc86ee418f424441cfa1ebbdb86fe",
+      "bytes": 41560
+    },
+    {
+      "path": "data\\raw\\nasa_power_2024\\nasa-lg_20240101_20241231.json",
+      "sha256": "3ac1d2e1afff5f48452fae4263040cc8f278b70bb5d73b9468c90c35de4a752d",
+      "bytes": 41613
+    },
+    {
+      "path": "data\\raw\\nasa_power_2024\\nasa-dp_20240101_20241231.json",
+      "sha256": "ad5a9527cad263bdc6895ea13e9233de3923bda2a28a0c358e096a60a7daf338",
+      "bytes": 41612
+    }
+  ],
+  "normalized_file": {
+    "path": "data\\nasa_power_shenzhen_2024.csv",
+    "sha256": "2d2c706261acdfc6ce49870813e60e1ada5305161ec64f8c208c743d0861b577",
+    "bytes": 68659,
+    "records": 1098
+  },
+  "raw_capture_mode": "normalized_json_snapshot",
+  "raw_capture_note": "The 2026-08-22 acquisition parsed each response and re-serialized it as indented UTF-8 JSON. Hashes cover these complete local JSON snapshots, not the original HTTP response body bytes.",
+  "value_verification": {
+    "verified_at": "2026-08-23T09:14:30+08:00",
+    "method": "Re-fetched all three recorded query URLs from the official NASA POWER endpoint and compared every T2M, PRECTOTCORR, ALLSKY_SFC_SW_DWN, and RH2M date value.",
+    "result": "passed",
+    "point_count": 3,
+    "days_per_point": 366,
+    "parameter_day_values_compared": 4392,
+    "parameter_value_mismatches": 0,
+    "expected_dynamic_differences": [
+      "times.data",
+      "times.process"
+    ],
+    "note": "Response timing metadata varied as expected; scientific parameter values, API version, and response geometry matched."
+  },
+  "spatial_sampling_note": "The three labels denote representative request coordinates, not administrative-area averages. Longgang and Dapeng have identical 2024 values for all four requested parameters, consistent with the products' native spatial resolution; they must not be treated as independent station series."
+}

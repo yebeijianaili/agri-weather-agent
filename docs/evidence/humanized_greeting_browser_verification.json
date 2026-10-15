@@ -1,0 +1,20 @@
+{
+  "url": "http://127.0.0.1:8003/",
+  "question": "你好",
+  "answer": "你好，随时准备帮助你查看农田的气象数据或检查数据质量。你首先想看哪方面呢？\n\n17:53",
+  "agent_status_mode": "local_model",
+  "agent_status_text": "本地模型",
+  "evidence_chip_count": 0,
+  "runtime_exceptions": [],
+  "console_errors": [],
+  "screenshot": "09_humanized_greeting.png",
+  "checks": {
+    "answer_is_humanized": true,
+    "no_analysis_prefix": true,
+    "no_fake_evidence": true,
+    "local_model_badge": true,
+    "no_runtime_exceptions": true,
+    "no_console_errors": true
+  },
+  "passed": true
+}
